@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA 404 - Secure Data Wiping Software | NIST 800-88 Compliant</title>
+    <meta name="description"
+        content="Download DATA 404, the ultimate secure data wiping tool. Compliant with NIST 800-88 standards. Ensure your data is gone forever.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Clickjacking Protection -->
+    <style id="antiClickjack">
+        body {
+            display: none !important;
+        }
+    </style>
+    <script type="text/javascript">
+        // Frame-busting code
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        } else {
+            top.location = self.location;
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="content-wrapper">
+        <header>
+            <div class="logo">DATA 404</div>
+            <nav>
+                <a href="#nist">NIST Compliance</a>
+                <a href="#product">Software</a>
+                <a href="#download" class="btn-nav">Download</a>
+            </nav>
+        </header>
+
+        <main>
+            <section id="hero">
+                <h1 class="glitch" data-text="DATA 404">DATA 404</h1>
+                <p class="subtitle">SECURE. IRREVERSIBLE. COMPLETE.</p>
+                <p class="description">The ultimate data sanitization tool for physical and logical drives.</p>
+            </section>
+
+            <section id="nist">
+                <h2>NIST 800-88 COMPLIANCE</h2>
+                <div class="cards-container">
+                    <div class="card">
+                        <h3>CLEAR</h3>
+                        <p>Overwriting addressable storage locations with non-sensitive data. Standard security level.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>PURGE</h3>
+                        <p>Physical or logical techniques that render target data recovery infeasible using
+                            state-of-the-art laboratory techniques.</p>
+                    </div>
+                    <div class="card">
+                        <h3>DESTROY</h3>
+                        <p>Resulting in media inability to withstand read operations. The ultimate data end.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="product">
+                <h2>SECURE DATA WIPING</h2>
+                <div class="product-layout">
+                    <div class="product-info">
+                        <p><strong>Why is data wiping necessary?</strong></p>
+                        <ul>
+                            <li>Prevent identity theft and data breaches</li>
+                            <li>Ensure compliance with privacy regulations (GDPR, HIPAA, SOX)</li>
+                            <li>Safely repurpose or dispose of hardware</li>
+                        </ul>
+                        <p>DATA 404 ensures your data is wiped beyond recovery using advanced algorithms.</p>
+
+                        <h3 style="margin-top: 30px; color: #3b82f6;">🚀 KEY FEATURES</h3>
+                        <ul>
+                            <li><strong>Automatic Drive Detection:</strong> Detects both physical and logical drives
+                            </li>
+                            <li><strong>Multiple Wipe Standards:</strong> Quick Format, NIST SP 800-88, DoD 5220.22-M,
+                                IEEE 2883-2022</li>
+                            <li><strong>Certificate Generation:</strong> Auto-generates PDF + JSON certificates with
+                                digital hash</li>
+                            <li><strong>Certificate Verification:</strong> Validate authenticity of wipe certificates
+                            </li>
+                            <li><strong>Offline Operation:</strong> No internet connection required</li>
+                            <li><strong>Modern UI:</strong> Clean, professional interface with dark mode</li>
+                        </ul>
+
+                        <h3 style="margin-top: 30px; color: #3b82f6;">🔒 WIPE METHODS</h3>
+                        <ul>
+                            <li><strong>Quick Format:</strong> Fast, basic overwrite</li>
+                            <li><strong>NIST SP 800-88 (1-pass):</strong> NIST compliant, single pass zero-fill</li>
+                            <li><strong>DoD 5220.22-M (3-pass):</strong> Triple pass, DoD standard</li>
+                            <li><strong>IEEE 2883-2022 (7-pass):</strong> Military grade, maximum security</li>
+                        </ul>
+                    </div>
+                    <div class="product-visual">
+                        <div class="placeholder-ui">
+                            <div class="ui-header">DATA 404 v1.0</div>
+                            <div class="ui-body">
+                                <div class="drive-row">💽 PhysicalDrive0 [500 GB] - DETECTED</div>
+                                <div class="drive-row">💾 C: System Drive [SSD] - DETECTED</div>
+                                <div class="drive-row">💾 D: Data Drive [HDD] - DETECTED</div>
+                                <div class="status-bar">STATUS: READY TO WIPE</div>
+                                <div class="status-bar" style="margin-top: 10px; background: #1a472a; color: #4ade80;">
+                                    WIPE METHOD: DoD 5220.22-M (3-pass)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="download">
+                <h2>GET THE TOOL</h2>
+                <p>Download the most powerful data wiping software today.</p>
+                <p style="margin-top: 10px; color: #9ca3af; font-size: 14px;">
+                    ⚠️ <strong>WARNING:</strong> All data wiped is PERMANENTLY DESTROYED and CANNOT be recovered!
+                </p>
+                <button id="download-btn" class="btn-primary">LOGIN TO DOWNLOAD</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 DATA 404. All systems operational. | Developed by CODE MONK | v1.0.0</p>
+        </footer>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">AUTHENTICATION REQUIRED</h2>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+                <div class="input-group">
+                    <label for="login-username">USER ID</label>
+                    <input type="text" id="login-username" required placeholder="ENTER ID" minlength="3" maxlength="20"
+                        pattern="[a-zA-Z0-9_]+" title="Only letters, numbers, and underscores allowed">
+                </div>
+                <div class="input-group">
+                    <label for="login-password">PASSWORD</label>
+                    <input type="password" id="login-password" required placeholder="ENTER PASSWORD" minlength="6">
+                </div>
+                <button type="submit" class="btn-primary">ACCESS SYSTEM</button>
+                <p class="toggle-text">New user? <span class="toggle-link" id="show-register">CREATE ACCOUNT</span></p>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="input-group">
+                    <label for="register-username">USER ID</label>
+                    <input type="text" id="register-username" required placeholder="CHOOSE ID" minlength="3"
+                        maxlength="20" pattern="[a-zA-Z0-9_]+" title="Only letters, numbers, and underscores allowed">
+                    <small class="input-hint">3-20 characters, letters, numbers, and underscores only</small>
+                </div>
+                <div class="input-group">
+                    <label for="register-email">EMAIL</label>
+                    <input type="email" id="register-email" required placeholder="ENTER EMAIL">
+                    <small class="input-hint">Valid email required</small>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">PASSWORD</label>
+                    <input type="password" id="register-password" required placeholder="CHOOSE PASSWORD" minlength="8"
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters">
+                    <small class="input-hint">Min 8 characters, must include uppercase, lowercase, and number</small>
+                </div>
+                <div class="input-group">
+                    <label for="register-confirm">CONFIRM PASSWORD</label>
+                    <input type="password" id="register-confirm" required placeholder="RE-ENTER PASSWORD" minlength="8">
+                </div>
+                <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
+                <p class="toggle-text">Already registered? <span class="toggle-link" id="show-login">LOGIN HERE</span>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
