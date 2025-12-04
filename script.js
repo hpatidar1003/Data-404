@@ -244,13 +244,8 @@ loginForm.onsubmit = function (e) {
         alert('ACCESS GRANTED. DOWNLOADING DATA 404...');
         modal.classList.add('hidden');
 
-        // Actual download
-        const link = document.createElement('a');
-        link.href = 'dist/DATA404.exe'; // Path to the executable
-        link.download = 'DATA404.exe';
-        document.body.appendChild(link);
-        link.click(); // Trigger download
-        document.body.removeChild(link);
+        // Redirect to Google Drive download
+        window.open('https://drive.google.com/file/d/1qzv3B0lzGwEg7aPDhPW5CyMqYZ4M0b9N/view?usp=drive_link', '_blank');
 
         // Reset form
         loginForm.reset();
