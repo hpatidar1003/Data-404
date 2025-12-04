@@ -60,6 +60,104 @@ const showRegisterLink = document.getElementById('show-register');
 const showLoginLink = document.getElementById('show-login');
 const modalTitle = document.getElementById('modal-title');
 
+// Cursor Follower Effect
+const cursorFollower = document.querySelector('.cursor-follower');
+const eyeLeft = document.querySelector('.eye-left');
+const eyeRight = document.querySelector('.eye-right');
+
+// Eyes follow cursor
+modal.addEventListener('mousemove', (e) => {
+    if (!modal.classList.contains('hidden')) {
+        const rect = modal.getBoundingClientRect();
+        cursorFollower.style.left = e.clientX + 'px';
+        cursorFollower.style.top = e.clientY + 'px';
+
+        // Make eyes follow cursor
+        const modalLeft = document.querySelector('.modal-left');
+        if (modalLeft) {
+            const leftRect = eyeLeft.getBoundingClientRect();
+            const rightRect = eyeRight.getBoundingClientRect();
+
+            // Calculate angle for left eye
+            const leftCenterX = leftRect.left + leftRect.width / 2;
+            const leftCenterY = leftRect.top + leftRect.height / 2;
+            const leftAngle = Math.atan2(e.clientY - leftCenterY, e.clientX - leftCenterX);
+            const leftDistance = Math.min(3, Math.hypot(e.clientX - leftCenterX, e.clientY - leftCenterY) / 100);
+
+            // Calculate angle for right eye
+            const rightCenterX = rightRect.left + rightRect.width / 2;
+            const rightCenterY = rightRect.top + rightRect.height / 2;
+            const rightAngle = Math.atan2(e.clientY - rightCenterY, e.clientX - rightCenterX);
+            const rightDistance = Math.min(3, Math.hypot(e.clientX - rightCenterX, e.clientY - rightCenterY) / 100);
+
+            // Move pupils
+            const leftPupil = eyeLeft.querySelector('::before') || eyeLeft;
+            const rightPupil = eyeRight.querySelector('::before') || eyeRight;
+
+            const leftX = 50 + Math.cos(leftAngle) * leftDistance * 10;
+            const leftY = 50 + Math.sin(leftAngle) * leftDistance * 10;
+            const rightX = 50 + Math.cos(rightAngle) * rightDistance * 10;
+            const rightY = 50 + Math.sin(rightAngle) * rightDistance * 10;
+
+            eyeLeft.style.setProperty('--pupil-x', `${leftX}%`);
+            eyeLeft.style.setProperty('--pupil-y', `${leftY}%`);
+            eyeRight.style.setProperty('--pupil-x', `${rightX}%`);
+            eyeRight.style.setProperty('--pupil-y', `${rightY}%`);
+        }
+    }
+});
+
+// Password toggle functionality
+document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', function () {
+        const targetId = this.getAttribute('data-target');
+        const passwordInput = document.getElementById(targetId);
+        const isPassword = passwordInput.type === 'password';
+
+        passwordInput.type = isPassword ? 'text' : 'password';
+        this.textContent = isPassword ? '👁️‍🗨️' : '👁️';
+
+        // Eyes peek when password is visible
+        if (isPassword) {
+            eyeLeft.classList.add('peeking');
+            eyeRight.classList.add('peeking');
+            eyeLeft.classList.remove('closed');
+            eyeRight.classList.remove('closed');
+        } else {
+            eyeLeft.classList.remove('peeking');
+            eyeRight.classList.remove('peeking');
+        }
+    });
+});
+
+// Close eyes when typing password
+const passwordInputs = document.querySelectorAll('input[type="password"]');
+passwordInputs.forEach(input => {
+    input.addEventListener('focus', () => {
+        if (input.type === 'password') {
+            eyeLeft.classList.add('closed');
+            eyeRight.classList.add('closed');
+            eyeLeft.classList.remove('peeking');
+            eyeRight.classList.remove('peeking');
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        eyeLeft.classList.remove('closed');
+        eyeRight.classList.remove('closed');
+    });
+
+    // Also handle when input type changes dynamically
+    const observer = new MutationObserver(() => {
+        if (input === document.activeElement && input.type === 'password') {
+            eyeLeft.classList.add('closed');
+            eyeRight.classList.add('closed');
+        }
+    });
+
+    observer.observe(input, { attributes: true, attributeFilter: ['type'] });
+});
+
 // Initialize users from localStorage (mock database)
 function getUsers() {
     const users = localStorage.getItem('data404_users');
@@ -90,24 +188,59 @@ window.onclick = function (event) {
 showRegisterLink.onclick = function () {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
-    modalTitle.textContent = 'CREATE NEW ACCOUNT';
+    modalTitle.textContent = 'Create account!';
+    document.querySelector('.auth-subtitle').textContent = 'Join us today';
 }
 
 showLoginLink.onclick = function () {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
-    modalTitle.textContent = 'AUTHENTICATION REQUIRED';
+    modalTitle.textContent = 'Welcome back!';
+    document.querySelector('.auth-subtitle').textContent = 'Please enter your details';
+}
+
+// Google Sign-In Handlers
+document.getElementById('google-signin').onclick = function () {
+    alert('Google Sign-In is not yet configured. This would integrate with Google OAuth in production.');
+    // In production, this would trigger Google OAuth flow
+    // Example: window.location.href = '/auth/google';
+}
+
+document.getElementById('google-signup').onclick = function () {
+    alert('Google Sign-Up is not yet configured. This would integrate with Google OAuth in production.');
+    // In production, this would trigger Google OAuth flow
+    // Example: window.location.href = '/auth/google';
 }
 
 // Login Handler
 loginForm.onsubmit = function (e) {
     e.preventDefault();
-    const user = document.getElementById('login-username').value;
+    const loginIdentifier = document.getElementById('login-username').value.trim();
     const pass = document.getElementById('login-password').value;
 
     const users = getUsers();
 
-    if (users[user] && users[user].password === pass) {
+    // Check if login identifier is a username (direct lookup)
+    let foundUser = null;
+    let foundUsername = null;
+
+    // First try direct username lookup
+    if (users[loginIdentifier]) {
+        foundUser = users[loginIdentifier];
+        foundUsername = loginIdentifier;
+    } else {
+        // If not found, search by email
+        for (const [username, userData] of Object.entries(users)) {
+            if (userData.email && userData.email.toLowerCase() === loginIdentifier.toLowerCase()) {
+                foundUser = userData;
+                foundUsername = username;
+                break;
+            }
+        }
+    }
+
+    // Verify password if user was found
+    if (foundUser && foundUser.password === pass) {
         alert('ACCESS GRANTED. DOWNLOADING DATA 404...');
         modal.classList.add('hidden');
 
@@ -122,7 +255,7 @@ loginForm.onsubmit = function (e) {
         // Reset form
         loginForm.reset();
     } else {
-        alert('ACCESS DENIED: Invalid credentials');
+        alert('ACCESS DENIED: Invalid credentials.\nPlease check your email/username and password.');
     }
 }
 
@@ -191,7 +324,8 @@ registerForm.onsubmit = function (e) {
     // Switch to login form
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
-    modalTitle.textContent = 'AUTHENTICATION REQUIRED';
+    modalTitle.textContent = 'Welcome back!';
+    document.querySelector('.auth-subtitle').textContent = 'Please enter your details';
 
     // Reset form
     registerForm.reset();

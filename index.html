@@ -81,7 +81,7 @@
                         </ul>
                         <p>DATA 404 ensures your data is wiped beyond recovery using advanced algorithms.</p>
 
-                        <h3 style="margin-top: 30px; color: #3b82f6;">🚀 KEY FEATURES</h3>
+                        <h3 style="margin-top: 30px; color: #3b82f6;">KEY FEATURES</h3>
                         <ul>
                             <li><strong>Automatic Drive Detection:</strong> Detects both physical and logical drives
                             </li>
@@ -95,7 +95,7 @@
                             <li><strong>Modern UI:</strong> Clean, professional interface with dark mode</li>
                         </ul>
 
-                        <h3 style="margin-top: 30px; color: #3b82f6;">🔒 WIPE METHODS</h3>
+                        <h3 style="margin-top: 30px; color: #3b82f6;"> WIPE METHODS</h3>
                         <ul>
                             <li><strong>Quick Format:</strong> Fast, basic overwrite</li>
                             <li><strong>NIST SP 800-88 (1-pass):</strong> NIST compliant, single pass zero-fill</li>
@@ -107,9 +107,9 @@
                         <div class="placeholder-ui">
                             <div class="ui-header">DATA 404 v1.0</div>
                             <div class="ui-body">
-                                <div class="drive-row">💽 PhysicalDrive0 [500 GB] - DETECTED</div>
-                                <div class="drive-row">💾 C: System Drive [SSD] - DETECTED</div>
-                                <div class="drive-row">💾 D: Data Drive [HDD] - DETECTED</div>
+                                <div class="drive-row">PhysicalDrive0 [500 GB] - DETECTED</div>
+                                <div class="drive-row">C: System Drive [SSD] - DETECTED</div>
+                                <div class="drive-row">D: Data Drive [HDD] - DETECTED</div>
                                 <div class="status-bar">STATUS: READY TO WIPE</div>
                                 <div class="status-bar" style="margin-top: 10px; background: #1a472a; color: #4ade80;">
                                     WIPE METHOD: DoD 5220.22-M (3-pass)</div>
@@ -123,66 +123,157 @@
                 <h2>GET THE TOOL</h2>
                 <p>Download the most powerful data wiping software today.</p>
                 <p style="margin-top: 10px; color: #9ca3af; font-size: 14px;">
-                    ⚠️ <strong>WARNING:</strong> All data wiped is PERMANENTLY DESTROYED and CANNOT be recovered!
+                    <strong>WARNING:</strong> All data wiped is PERMANENTLY DESTROYED and CANNOT be recovered!
                 </p>
                 <button id="download-btn" class="btn-primary">LOGIN TO DOWNLOAD</button>
             </section>
         </main>
 
         <footer>
-            <p>&copy; 2025 DATA 404. All systems operational. | Developed by CODE MONK | v1.0.0</p>
+            <p>&copy; 2025 DATA 404. All systems operational. | Developed by TASK FORCE 141 | v1.0.0</p>
         </footer>
     </div>
 
-    <!-- Auth Modal -->
+    <!-- Auth Modal - Split Screen Design -->
     <div id="login-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 id="modal-title">AUTHENTICATION REQUIRED</h2>
+        <!-- Cursor Follower -->
+        <div class="cursor-follower"></div>
 
-            <!-- Login Form -->
-            <form id="login-form" class="auth-form">
-                <div class="input-group">
-                    <label for="login-username">USER ID</label>
-                    <input type="text" id="login-username" required placeholder="ENTER ID" minlength="3" maxlength="20"
-                        pattern="[a-zA-Z0-9_]+" title="Only letters, numbers, and underscores allowed">
+        <div class="split-modal-container">
+            <!-- Left Side - Animated Illustration -->
+            <div class="modal-left">
+                <div class="animated-shapes">
+                    <div class="shape shape-circle">
+                        <div class="face">
+                            <div class="eye eye-left"></div>
+                            <div class="eye eye-right"></div>
+                            <div class="mouth"></div>
+                        </div>
+                    </div>
+                    <div class="shape shape-rect-purple"></div>
+                    <div class="shape shape-rect-dark"></div>
+                    <div class="shape shape-square"></div>
                 </div>
-                <div class="input-group">
-                    <label for="login-password">PASSWORD</label>
-                    <input type="password" id="login-password" required placeholder="ENTER PASSWORD" minlength="6">
-                </div>
-                <button type="submit" class="btn-primary">ACCESS SYSTEM</button>
-                <p class="toggle-text">New user? <span class="toggle-link" id="show-register">CREATE ACCOUNT</span></p>
-            </form>
+            </div>
 
-            <!-- Registration Form -->
-            <form id="register-form" class="auth-form hidden">
-                <div class="input-group">
-                    <label for="register-username">USER ID</label>
-                    <input type="text" id="register-username" required placeholder="CHOOSE ID" minlength="3"
-                        maxlength="20" pattern="[a-zA-Z0-9_]+" title="Only letters, numbers, and underscores allowed">
-                    <small class="input-hint">3-20 characters, letters, numbers, and underscores only</small>
+            <!-- Right Side - Auth Forms -->
+            <div class="modal-right">
+                <span class="close-modal">&times;</span>
+
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <div class="auth-icon">+</div>
+                        <h2 id="modal-title">Welcome back!</h2>
+                        <p class="auth-subtitle">Please enter your details</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form">
+                        <div class="input-group">
+                            <label for="login-username">Email or Username</label>
+                            <input type="text" id="login-username" required placeholder="Enter your email or username"
+                                minlength="3" maxlength="50">
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="login-password" required placeholder="Enter password"
+                                    minlength="6">
+                                <button type="button" class="toggle-password" data-target="login-password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="remember-checkbox">
+                                <input type="checkbox" id="remember-me">
+                                <span>Remember for 30 days</span>
+                            </label>
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-login">Log in</button>
+
+                        <button type="button" class="btn-google" id="google-signin">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M9.003 18c2.43 0 4.467-.806 5.956-2.18L12.05 13.56c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z"
+                                    fill="#EA4335" />
+                            </svg>
+                            Log in with Google
+                        </button>
+
+                        <p class="toggle-text">Don't have an account? <span class="toggle-link" id="show-register">Sign
+                                up</span></p>
+                    </form>
+
+                    <!-- Registration Form -->
+                    <form id="register-form" class="auth-form hidden">
+                        <div class="input-group">
+                            <label for="register-username">Username</label>
+                            <input type="text" id="register-username" required placeholder="Choose a username"
+                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
+                                title="Only letters, numbers, and underscores allowed">
+                            <small class="input-hint">3-20 characters, letters, numbers, and underscores only</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" required placeholder="Enter your email">
+                            <small class="input-hint">Valid email required</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-password">Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="register-password" required placeholder="Choose a password"
+                                    minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters">
+                                <button type="button" class="toggle-password"
+                                    data-target="register-password">👁️</button>
+                            </div>
+                            <small class="input-hint">Min 8 characters, must include uppercase, lowercase, and
+                                number</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-confirm">Confirm Password</label>
+                            <input type="password" id="register-confirm" required placeholder="Re-enter password"
+                                minlength="8">
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-login">Create Account</button>
+
+                        <button type="button" class="btn-google" id="google-signup">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M9.003 18c2.43 0 4.467-.806 5.956-2.18L12.05 13.56c-.806.54-1.837.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z"
+                                    fill="#EA4335" />
+                            </svg>
+                            Sign up with Google
+                        </button>
+
+                        <p class="toggle-text">Already have an account? <span class="toggle-link" id="show-login">Log
+                                in</span></p>
+                    </form>
                 </div>
-                <div class="input-group">
-                    <label for="register-email">EMAIL</label>
-                    <input type="email" id="register-email" required placeholder="ENTER EMAIL">
-                    <small class="input-hint">Valid email required</small>
-                </div>
-                <div class="input-group">
-                    <label for="register-password">PASSWORD</label>
-                    <input type="password" id="register-password" required placeholder="CHOOSE PASSWORD" minlength="8"
-                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                        title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters">
-                    <small class="input-hint">Min 8 characters, must include uppercase, lowercase, and number</small>
-                </div>
-                <div class="input-group">
-                    <label for="register-confirm">CONFIRM PASSWORD</label>
-                    <input type="password" id="register-confirm" required placeholder="RE-ENTER PASSWORD" minlength="8">
-                </div>
-                <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
-                <p class="toggle-text">Already registered? <span class="toggle-link" id="show-login">LOGIN HERE</span>
-                </p>
-            </form>
+            </div>
         </div>
     </div>
 
