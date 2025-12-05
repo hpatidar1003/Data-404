@@ -59,104 +59,7 @@ const registerForm = document.getElementById('register-form');
 const showRegisterLink = document.getElementById('show-register');
 const showLoginLink = document.getElementById('show-login');
 const modalTitle = document.getElementById('modal-title');
-
-// Cursor Follower Effect
-const cursorFollower = document.querySelector('.cursor-follower');
-const eyeLeft = document.querySelector('.eye-left');
-const eyeRight = document.querySelector('.eye-right');
-
-// Eyes follow cursor
-modal.addEventListener('mousemove', (e) => {
-    if (!modal.classList.contains('hidden')) {
-        const rect = modal.getBoundingClientRect();
-        cursorFollower.style.left = e.clientX + 'px';
-        cursorFollower.style.top = e.clientY + 'px';
-
-        // Make eyes follow cursor
-        const modalLeft = document.querySelector('.modal-left');
-        if (modalLeft) {
-            const leftRect = eyeLeft.getBoundingClientRect();
-            const rightRect = eyeRight.getBoundingClientRect();
-
-            // Calculate angle for left eye
-            const leftCenterX = leftRect.left + leftRect.width / 2;
-            const leftCenterY = leftRect.top + leftRect.height / 2;
-            const leftAngle = Math.atan2(e.clientY - leftCenterY, e.clientX - leftCenterX);
-            const leftDistance = Math.min(3, Math.hypot(e.clientX - leftCenterX, e.clientY - leftCenterY) / 100);
-
-            // Calculate angle for right eye
-            const rightCenterX = rightRect.left + rightRect.width / 2;
-            const rightCenterY = rightRect.top + rightRect.height / 2;
-            const rightAngle = Math.atan2(e.clientY - rightCenterY, e.clientX - rightCenterX);
-            const rightDistance = Math.min(3, Math.hypot(e.clientX - rightCenterX, e.clientY - rightCenterY) / 100);
-
-            // Move pupils
-            const leftPupil = eyeLeft.querySelector('::before') || eyeLeft;
-            const rightPupil = eyeRight.querySelector('::before') || eyeRight;
-
-            const leftX = 50 + Math.cos(leftAngle) * leftDistance * 10;
-            const leftY = 50 + Math.sin(leftAngle) * leftDistance * 10;
-            const rightX = 50 + Math.cos(rightAngle) * rightDistance * 10;
-            const rightY = 50 + Math.sin(rightAngle) * rightDistance * 10;
-
-            eyeLeft.style.setProperty('--pupil-x', `${leftX}%`);
-            eyeLeft.style.setProperty('--pupil-y', `${leftY}%`);
-            eyeRight.style.setProperty('--pupil-x', `${rightX}%`);
-            eyeRight.style.setProperty('--pupil-y', `${rightY}%`);
-        }
-    }
-});
-
-// Password toggle functionality
-document.querySelectorAll('.toggle-password').forEach(button => {
-    button.addEventListener('click', function () {
-        const targetId = this.getAttribute('data-target');
-        const passwordInput = document.getElementById(targetId);
-        const isPassword = passwordInput.type === 'password';
-
-        passwordInput.type = isPassword ? 'text' : 'password';
-        this.textContent = isPassword ? '👁️‍🗨️' : '👁️';
-
-        // Eyes peek when password is visible
-        if (isPassword) {
-            eyeLeft.classList.add('peeking');
-            eyeRight.classList.add('peeking');
-            eyeLeft.classList.remove('closed');
-            eyeRight.classList.remove('closed');
-        } else {
-            eyeLeft.classList.remove('peeking');
-            eyeRight.classList.remove('peeking');
-        }
-    });
-});
-
-// Close eyes when typing password
-const passwordInputs = document.querySelectorAll('input[type="password"]');
-passwordInputs.forEach(input => {
-    input.addEventListener('focus', () => {
-        if (input.type === 'password') {
-            eyeLeft.classList.add('closed');
-            eyeRight.classList.add('closed');
-            eyeLeft.classList.remove('peeking');
-            eyeRight.classList.remove('peeking');
-        }
-    });
-
-    input.addEventListener('blur', () => {
-        eyeLeft.classList.remove('closed');
-        eyeRight.classList.remove('closed');
-    });
-
-    // Also handle when input type changes dynamically
-    const observer = new MutationObserver(() => {
-        if (input === document.activeElement && input.type === 'password') {
-            eyeLeft.classList.add('closed');
-            eyeRight.classList.add('closed');
-        }
-    });
-
-    observer.observe(input, { attributes: true, attributeFilter: ['type'] });
-});
+const loginToggleText = document.getElementById('login-toggle-text');
 
 // Initialize users from localStorage (mock database)
 function getUsers() {
@@ -188,28 +91,62 @@ window.onclick = function (event) {
 showRegisterLink.onclick = function () {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
-    modalTitle.textContent = 'Create account!';
-    document.querySelector('.auth-subtitle').textContent = 'Join us today';
+    modalTitle.textContent = 'Create Account';
+    // Toggle the bottom text visibility
+    showRegisterLink.parentElement.classList.add('hidden');
+    loginToggleText.classList.remove('hidden');
 }
 
 showLoginLink.onclick = function () {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
-    modalTitle.textContent = 'Welcome back!';
-    document.querySelector('.auth-subtitle').textContent = 'Please enter your details';
+    modalTitle.textContent = 'Login to Your Account';
+    // Toggle the bottom text visibility
+    loginToggleText.classList.add('hidden');
+    showRegisterLink.parentElement.classList.remove('hidden');
 }
 
-// Google Sign-In Handlers
-document.getElementById('google-signin').onclick = function () {
-    alert('Google Sign-In is not yet configured. This would integrate with Google OAuth in production.');
-    // In production, this would trigger Google OAuth flow
-    // Example: window.location.href = '/auth/google';
-}
 
-document.getElementById('google-signup').onclick = function () {
-    alert('Google Sign-Up is not yet configured. This would integrate with Google OAuth in production.');
-    // In production, this would trigger Google OAuth flow
-    // Example: window.location.href = '/auth/google';
+
+// Custom Notification System
+function showNotification(message, type = 'info') {
+    const container = document.getElementById('notification-container');
+    if (!container) {
+        console.error('Notification container not found!');
+        alert(message); // Fallback
+        return;
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${type}`;
+
+    let icon = 'ℹ️';
+    if (type === 'success') icon = '✅';
+    if (type === 'error') icon = '❌';
+
+    toast.innerHTML = `
+        <span class="notification-icon">${icon}</span>
+        <span class="notification-message">${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+    });
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            if (container.contains(toast)) {
+                container.removeChild(toast);
+            }
+        }, 300);
+    }, 3000);
 }
 
 // Login Handler
@@ -241,7 +178,7 @@ loginForm.onsubmit = function (e) {
 
     // Verify password if user was found
     if (foundUser && foundUser.password === pass) {
-        alert('ACCESS GRANTED. DOWNLOADING DATA 404...');
+        showNotification('ACCESS GRANTED. DOWNLOADING DATA 404...', 'success');
         modal.classList.add('hidden');
 
         // Redirect to Google Drive download
@@ -250,7 +187,7 @@ loginForm.onsubmit = function (e) {
         // Reset form
         loginForm.reset();
     } else {
-        alert('ACCESS DENIED: Invalid credentials.\nPlease check your email/username and password.');
+        showNotification('ACCESS DENIED: Invalid credentials.', 'error');
     }
 }
 
@@ -260,48 +197,42 @@ registerForm.onsubmit = function (e) {
     const user = document.getElementById('register-username').value;
     const email = document.getElementById('register-email').value;
     const pass = document.getElementById('register-password').value;
-    const confirmPass = document.getElementById('register-confirm').value;
 
     const users = getUsers();
 
     // Username validation
     if (user.length < 3 || user.length > 20) {
-        alert('ERROR: Username must be between 3 and 20 characters');
+        showNotification('Username must be between 3 and 20 characters', 'error');
         return;
     }
 
     const usernameRegex = /^[a-zA-Z0-9_]+$/;
     if (!usernameRegex.test(user)) {
-        alert('ERROR: Username can only contain letters, numbers, and underscores');
+        showNotification('Username can only contain letters, numbers, and underscores', 'error');
         return;
     }
 
     if (users[user]) {
-        alert('ERROR: User ID already exists');
+        showNotification('User ID already exists', 'error');
         return;
     }
 
     // Email validation
     const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
     if (!emailRegex.test(email)) {
-        alert('ERROR: Please enter a valid email address');
+        showNotification('Please enter a valid email address', 'error');
         return;
     }
 
     // Password validation
     if (pass.length < 8) {
-        alert('ERROR: Password must be at least 8 characters');
+        showNotification('Password must be at least 8 characters', 'error');
         return;
     }
 
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(pass)) {
-        alert('ERROR: Password must contain at least one uppercase letter, one lowercase letter, and one number');
-        return;
-    }
-
-    if (pass !== confirmPass) {
-        alert('ERROR: Passwords do not match');
+        showNotification('Password must contain at least one uppercase letter, one lowercase letter, and one number', 'error');
         return;
     }
 
@@ -314,13 +245,14 @@ registerForm.onsubmit = function (e) {
 
     saveUsers(users);
 
-    alert('ACCOUNT CREATED SUCCESSFULLY. Please login.');
+    showNotification('ACCOUNT CREATED SUCCESSFULLY. Please login.', 'success');
 
     // Switch to login form
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
-    modalTitle.textContent = 'Welcome back!';
-    document.querySelector('.auth-subtitle').textContent = 'Please enter your details';
+    modalTitle.textContent = 'Login to Your Account';
+    loginToggleText.classList.add('hidden');
+    showRegisterLink.parentElement.classList.remove('hidden');
 
     // Reset form
     registerForm.reset();
