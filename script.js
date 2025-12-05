@@ -61,15 +61,7 @@ const showLoginLink = document.getElementById('show-login');
 const modalTitle = document.getElementById('modal-title');
 const loginToggleText = document.getElementById('login-toggle-text');
 
-// Initialize users from localStorage (mock database)
-function getUsers() {
-    const users = localStorage.getItem('data404_users');
-    return users ? JSON.parse(users) : {};
-}
 
-function saveUsers(users) {
-    localStorage.setItem('data404_users', JSON.stringify(users));
-}
 
 // Open modal
 btn.onclick = function () {
@@ -150,57 +142,52 @@ function showNotification(message, type = 'info') {
 }
 
 // Login Handler
-loginForm.onsubmit = function (e) {
+loginForm.onsubmit = async function (e) {
     e.preventDefault();
     const loginIdentifier = document.getElementById('login-username').value.trim();
     const pass = document.getElementById('login-password').value;
 
-    const users = getUsers();
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                loginIdentifier: loginIdentifier,
+                password: pass
+            })
+        });
 
-    // Check if login identifier is a username (direct lookup)
-    let foundUser = null;
-    let foundUsername = null;
+        const data = await response.json();
 
-    // First try direct username lookup
-    if (users[loginIdentifier]) {
-        foundUser = users[loginIdentifier];
-        foundUsername = loginIdentifier;
-    } else {
-        // If not found, search by email
-        for (const [username, userData] of Object.entries(users)) {
-            if (userData.email && userData.email.toLowerCase() === loginIdentifier.toLowerCase()) {
-                foundUser = userData;
-                foundUsername = username;
-                break;
+        if (response.ok && data.success) {
+            showNotification('ACCESS GRANTED. DOWNLOADING DATA 404...', 'success');
+            modal.classList.add('hidden');
+
+            // Open the secure download link provided by the server
+            if (data.downloadLink) {
+                window.open(data.downloadLink, '_blank');
             }
+
+            loginForm.reset();
+        } else {
+            showNotification(data.error || 'Login failed', 'error');
         }
-    }
-
-    // Verify password if user was found
-    if (foundUser && foundUser.password === pass) {
-        showNotification('ACCESS GRANTED. DOWNLOADING DATA 404...', 'success');
-        modal.classList.add('hidden');
-
-        // Redirect to Google Drive download
-        window.open('https://drive.google.com/file/d/1qzv3B0lzGwEg7aPDhPW5CyMqYZ4M0b9N/view?usp=drive_link', '_blank');
-
-        // Reset form
-        loginForm.reset();
-    } else {
-        showNotification('ACCESS DENIED: Invalid credentials.', 'error');
+    } catch (error) {
+        console.error('Login Error:', error);
+        showNotification('Connection error. Please try again.', 'error');
     }
 }
 
 // Registration Handler
-registerForm.onsubmit = function (e) {
+registerForm.onsubmit = async function (e) {
     e.preventDefault();
     const user = document.getElementById('register-username').value;
     const email = document.getElementById('register-email').value;
     const pass = document.getElementById('register-password').value;
 
-    const users = getUsers();
-
-    // Username validation
+    // Client-side validation
     if (user.length < 3 || user.length > 20) {
         showNotification('Username must be between 3 and 20 characters', 'error');
         return;
@@ -212,19 +199,12 @@ registerForm.onsubmit = function (e) {
         return;
     }
 
-    if (users[user]) {
-        showNotification('User ID already exists', 'error');
-        return;
-    }
-
-    // Email validation
     const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
     if (!emailRegex.test(email)) {
         showNotification('Please enter a valid email address', 'error');
         return;
     }
 
-    // Password validation
     if (pass.length < 8) {
         showNotification('Password must be at least 8 characters', 'error');
         return;
@@ -236,24 +216,37 @@ registerForm.onsubmit = function (e) {
         return;
     }
 
-    // Save new user
-    users[user] = {
-        email: email,
-        password: pass,
-        registered: new Date().toISOString()
-    };
+    try {
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: user,
+                email: email,
+                password: pass
+            })
+        });
 
-    saveUsers(users);
+        const data = await response.json();
 
-    showNotification('ACCOUNT CREATED SUCCESSFULLY. Please login.', 'success');
+        if (response.ok && data.success) {
+            showNotification('ACCOUNT CREATED SUCCESSFULLY. Please login.', 'success');
 
-    // Switch to login form
-    registerForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-    modalTitle.textContent = 'Login to Your Account';
-    loginToggleText.classList.add('hidden');
-    showRegisterLink.parentElement.classList.remove('hidden');
+            // Switch to login form
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            modalTitle.textContent = 'Login to Your Account';
+            loginToggleText.classList.add('hidden');
+            showRegisterLink.parentElement.classList.remove('hidden');
 
-    // Reset form
-    registerForm.reset();
+            registerForm.reset();
+        } else {
+            showNotification(data.error || 'Registration failed', 'error');
+        }
+    } catch (error) {
+        console.error('Registration Error:', error);
+        showNotification('Connection error. Please try again.', 'error');
+    }
 }
